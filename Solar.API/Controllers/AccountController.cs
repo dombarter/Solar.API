@@ -34,8 +34,7 @@ namespace Solar.API.Controllers
                 return Ok();
             }
 
-            return BadRequest();
-            
+            return new BadRequestObjectResult(result.Errors);
         }
 
         [HttpPost]
@@ -49,7 +48,7 @@ namespace Solar.API.Controllers
                 return Ok();
             }
 
-            return BadRequest();
+            return BadRequest("Incorrect email or password");
         }
     }
 }
