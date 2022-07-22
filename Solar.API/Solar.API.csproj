@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Solar.Common\Solar.Common.csproj" />
     <ProjectReference Include="..\Solar.Data\Solar.Data.csproj" />
     <ProjectReference Include="..\Solar.DTOs\Solar.DTOs.csproj" />
   </ItemGroup>

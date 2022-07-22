@@ -3,16 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solar.API", "Solar.API\Solar.API.csproj", "{8B26CC61-083D-4023-99E0-3FED83D438A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solar.API", "Solar.API\Solar.API.csproj", "{8B26CC61-083D-4023-99E0-3FED83D438A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solar.Data", "Solar.Data\Solar.Data.csproj", "{890C8FA0-EB2C-44A9-B745-3172F3D0C7C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solar.Data", "Solar.Data\Solar.Data.csproj", "{890C8FA0-EB2C-44A9-B745-3172F3D0C7C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solar.DTOs", "Solar.DTOs\Solar.DTOs.csproj", "{F164BEFB-33CF-4EB5-86E6-BE4D59316D2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solar.DTOs", "Solar.DTOs\Solar.DTOs.csproj", "{F164BEFB-33CF-4EB5-86E6-BE4D59316D2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6823DC79-F89C-40E9-A047-03482C993A89}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solar.Common", "Solar.Common\Solar.Common.csproj", "{BEE2FA9D-7A04-4AED-8D04-D59EC7026848}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{F164BEFB-33CF-4EB5-86E6-BE4D59316D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F164BEFB-33CF-4EB5-86E6-BE4D59316D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F164BEFB-33CF-4EB5-86E6-BE4D59316D2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEE2FA9D-7A04-4AED-8D04-D59EC7026848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEE2FA9D-7A04-4AED-8D04-D59EC7026848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEE2FA9D-7A04-4AED-8D04-D59EC7026848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEE2FA9D-7A04-4AED-8D04-D59EC7026848}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

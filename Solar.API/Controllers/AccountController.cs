@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Solar.Common.Roles;
 using Solar.DTOs.Inbound;
 
 namespace Solar.API.Controllers
@@ -10,11 +11,13 @@ namespace Solar.API.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpPost]
@@ -27,14 +30,21 @@ namespace Solar.API.Controllers
                 Email = model.Email
             };
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var createResult = await _userManager.CreateAsync(user, model.Password);
 
-            if (result.Succeeded)
+            if (!createResult.Succeeded)
             {
-                return Ok();
+                return new BadRequestObjectResult(createResult.Errors);
             }
 
-            return new BadRequestObjectResult(result.Errors);
+            var assignRoleResult = await _userManager.AddToRoleAsync(user, Roles.User);
+
+            if (!assignRoleResult.Succeeded)
+            {
+                return new BadRequestObjectResult(assignRoleResult.Errors);
+            }
+
+            return Ok();
         }
 
         [HttpPost]
