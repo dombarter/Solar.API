@@ -211,3 +211,17 @@ Based on:
 - https://docs.microsoft.com/en-us/aspnet/core/security/authorization/roles?view=aspnetcore-6.0
 - https://www.c-sharpcorner.com/article/jwt-authentication-and-authorization-in-net-6-0-with-identity-framework/
 - https://docs.microsoft.com/en-us/aspnet/core/security/authorization/secure-data?view=aspnetcore-6.0
+
+# Adding JWTs
+
+Install the following package:
+
+- Microsoft.AspNetCore.Authentication.JwtBearer
+
+Based on:
+
+- https://docs.microsoft.com/en-us/aspnet/core/security/authorization/roles?view=aspnetcore-6.0
+
+https://codewithmukesh.com/blog/aspnet-core-api-with-jwt-authentication/
+https://weblog.west-wind.com/posts/2021/Mar/09/Role-based-JWT-Tokens-in-ASPNET-Core
+https://www.c-sharpcorner.com/article/how-to-add-jwt-bearer-token-authorization-functionality-in-swagger/

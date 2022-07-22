@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
@@ -25,6 +26,7 @@
     <ProjectReference Include="..\Solar.Common\Solar.Common.csproj" />
     <ProjectReference Include="..\Solar.Data\Solar.Data.csproj" />
     <ProjectReference Include="..\Solar.DTOs\Solar.DTOs.csproj" />
+    <ProjectReference Include="..\Solar.Services\Solar.Services.csproj" />
   </ItemGroup>
 
 </Project>
