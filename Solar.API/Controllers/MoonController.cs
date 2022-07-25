@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Solar.API.Controllers
 {
@@ -11,12 +13,29 @@ namespace Solar.API.Controllers
         private readonly List<string> Moons = new List<string> { "Moon", "Europa", "Titan", "Ganymede", "Milmas", "Hyperion", "Dione", "Kiviuq" };
         private readonly Random Random = new Random();
 
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public MoonController(UserManager<IdentityUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
+        [HttpGet]
+        [Route("user")]
+        [Authorize(Roles = "Admin, User")]
+        public async Task<ActionResult<IdentityUser>> GetLoggedInUser()
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userManager.FindByNameAsync(username);
+            return new OkObjectResult(user);
+        }
 
         [HttpGet]
         [Route("one")]
         [Authorize(Roles = "User")]
         public ActionResult<string> GetRandomMoon()
         {
+            
             return Moons[Random.Next(Moons.Count)];
         }
 
