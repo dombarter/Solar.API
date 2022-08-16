@@ -146,6 +146,31 @@ export interface LoginDto {
 /**
  * 
  * @export
+ * @interface LoginResultDto
+ */
+export interface LoginResultDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginResultDto
+     */
+    'email'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginResultDto
+     */
+    'accessToken'?: string | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof LoginResultDto
+     */
+    'roles'?: Array<string> | null;
+}
+/**
+ * 
+ * @export
  * @interface RegisterDto
  */
 export interface RegisterDto {
@@ -189,7 +214,8 @@ export const AccountApiAxiosParamCreator = function (configuration?: Configurati
             const localVarQueryParameter = {} as any;
 
             // authentication Bearer required
-            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -225,7 +251,8 @@ export const AccountApiAxiosParamCreator = function (configuration?: Configurati
             const localVarQueryParameter = {} as any;
 
             // authentication Bearer required
-            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -257,7 +284,7 @@ export const AccountApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userLoginPost(loginDto?: LoginDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async userLoginPost(loginDto?: LoginDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResultDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userLoginPost(loginDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -287,7 +314,7 @@ export const AccountApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userLoginPost(loginDto?: LoginDto, options?: any): AxiosPromise<string> {
+        userLoginPost(loginDto?: LoginDto, options?: any): AxiosPromise<LoginResultDto> {
             return localVarFp.userLoginPost(loginDto, options).then((request) => request(axios, basePath));
         },
         /**
@@ -358,7 +385,8 @@ export const MoonApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarQueryParameter = {} as any;
 
             // authentication Bearer required
-            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -390,7 +418,8 @@ export const MoonApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarQueryParameter = {} as any;
 
             // authentication Bearer required
-            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -422,7 +451,8 @@ export const MoonApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarQueryParameter = {} as any;
 
             // authentication Bearer required
-            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     

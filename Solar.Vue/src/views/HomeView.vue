@@ -7,8 +7,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-import { AccountApi, Configuration, MoonApi } from "@/api";
+import HelloWorld from "@/components/HelloWorld.vue";
+import { useUserStore } from "@/stores/user";
+import { getAccountService, getMoonService } from "@/services/api";
 
 export default Vue.extend({
   name: "HomeView",
@@ -16,22 +17,35 @@ export default Vue.extend({
     HelloWorld,
   },
   async mounted() {
-    const accountApi = new AccountApi(undefined, "https://localhost:7234");
-    const result = await accountApi.userLoginPost({
-      email: "dom.barter@3squared.com",
-      password: "PA55word#",
-    });
-    console.log(result.data);
+    // Login
+    if (this.user.accessToken) {
+      console.log("User already has access token", this.user.email);
+    } else {
+      const result = await this.accountService.userLoginPost({
+        email: "dom.barter@3squared.com",
+        password: "PA55word#",
+      });
+      this.user.login(result.data);
+      console.log("Logged in", this.user.email, this.user.accessToken);
 
-    window.localStorage.setItem("apiKey", `Bearer ${result.data}`);
+      // Refresh the moonService
+      this.moonService = getMoonService(this.user.accessToken);
+    }
 
-    const moonApi = new MoonApi(
-      new Configuration({ apiKey: window.localStorage.getItem("apiKey")! }),
-      "https://localhost:7234"
-    );
+    // Fetch moons
+    console.log("Fetching moons");
+    const moons = await this.moonService.moonsTwoGet();
+    console.log("Moons fetched", moons);
+  },
+  setup() {
+    // Get the user store
+    const user = useUserStore();
 
-    const moons = await moonApi.moonsTwoGet();
-    console.log(moons.data);
+    // Setup the services we need
+    const accountService = getAccountService(user.accessToken);
+    const moonService = getMoonService(user.accessToken);
+
+    return { user, accountService, moonService };
   },
 });
 </script>

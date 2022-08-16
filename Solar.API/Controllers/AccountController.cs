@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Solar.Common.Roles;
 using Solar.DTOs.Inbound;
+using Solar.DTOs.Outbound;
 using Solar.Services.Token;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -55,7 +56,7 @@ namespace Solar.API.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> Login([FromBody] LoginDto model)
+        public async Task<ActionResult<LoginResultDto>> Login([FromBody] LoginDto model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
@@ -68,7 +69,9 @@ namespace Solar.API.Controllers
             var user = await _userManager.FindByNameAsync(model.Email);
             var token = await _tokenService.GenerateJwtToken(user, TimeSpan.FromMinutes(30));
 
-            return Ok(token);
+            return new OkObjectResult(
+                new LoginResultDto(user.Email, token, await _userManager.GetRolesAsync(user))
+            );
         }
     }
 }

@@ -66,17 +66,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/LoginResultDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/LoginResultDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/LoginResultDto"
                 }
               }
             }
@@ -260,6 +260,27 @@
         },
         "additionalProperties": false
       },
+      "LoginResultDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "accessToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RegisterDto": {
         "required": [
           "email",
@@ -283,10 +304,9 @@
     },
     "securitySchemes": {
       "Bearer": {
-        "type": "apiKey",
-        "description": "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
-        "name": "Authorization",
-        "in": "header"
+        "type": "http",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
       }
     }
   },
