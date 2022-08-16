@@ -19,7 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,5 +28,10 @@
     <ProjectReference Include="..\Solar.DTOs\Solar.DTOs.csproj" />
     <ProjectReference Include="..\Solar.Services\Solar.Services.csproj" />
   </ItemGroup>
+
+    <Target Name="OpenAPI" AfterTargets="Build">
+	    <Exec Command="dotnet tool restore" WorkingDirectory="$(ProjectDir)" />
+	    <Exec Command="dotnet swagger tofile --output ../Solar.Vue/references/swagger.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+    </Target>
 
 </Project>
