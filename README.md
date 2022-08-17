@@ -408,3 +408,137 @@ Based on:
 - https://weblog.west-wind.com/posts/2021/Mar/09/Role-based-JWT-Tokens-in-ASPNET-Core
 - https://www.c-sharpcorner.com/article/how-to-add-jwt-bearer-token-authorization-functionality-in-swagger/
 - https://www.freecodespot.com/blog/use-jwt-bearer-authorization-in-swagger/
+
+## JWT Storage
+
+We can't store JWTs in local storage when we're consuming the API via an SPA. 
+
+Add cookie name to app settings:
+```json
+"Jwt": {
+    "Key": "ThisIsMySecretKey",
+    "Issuer": "https://localhost:7234/",
+    "Audience": "https://localhost:7234/",
+    "CookieName": "solar-access-token"
+}
+```
+
+Add this section to your `AddJwtBearer` options:
+```csharp
+options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.Request.Cookies[builder.Configuration["Jwt:CookieName"]];
+            return Task.CompletedTask;
+        },
+    };
+```
+
+Change the login action to return a cookie with the token (must be HttpOnly), and only return account info in the body (not the token):
+```csharp
+Response.Cookies.Append(_config["Jwt:CookieName"], token, new CookieOptions
+{
+    HttpOnly = true,
+    IsEssential = true,
+    MaxAge = TimeSpan.FromMinutes(30),
+    SameSite = SameSiteMode.None,
+    Secure = true,
+});
+
+return new OkObjectResult(
+    new LoginResultDto(user.Email, await _userManager.GetRolesAsync(user))
+);
+```
+
+Remove all the Swagger integration for the Bearer token - the browser will handle this for us now:
+
+```csharp
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    var jwtSecurityScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = JwtBearerDefaults.AuthenticationScheme
+        }
+    };
+
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, jwtSecurityScheme);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement(){{ jwtSecurityScheme, new string[] {} }});
+});
+```
+
+becomes
+
+```csharp
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+```
+
+Now when you test in swagger, and login, you will see a cookie is automtically put into the browser - which will be used on subsequent requests
+
+As HttpOnly cookies cannot be accessed by javascript (hence why we use them!), we need to trigger a logout by calling a new endpoint. This will simply return the cookie with no token in it, and an instant expiry so the browser loses that cookie. 
+
+```csharp
+[HttpPost]
+[Route("logout")]
+[AllowAnonymous]
+public IActionResult Logout()
+{
+    Response.Cookies.Append(_config["Jwt:CookieName"], string.Empty, new CookieOptions
+    {
+        HttpOnly = true,
+        IsEssential = true,
+        MaxAge = TimeSpan.Zero,
+        SameSite = SameSiteMode.None,
+        Secure = true,
+    });
+
+    return Ok();
+}
+```
+
+
+
+Cookies work when using a system such as swagger, but when using them in Vue.js we need a bit more configuration. 
+
+First of all we need to define a default cors policy with a named origin:
+```csharp
+// Add cors
+builder.Services.AddCors(options => options.AddDefaultPolicy(
+    policy => policy
+        .WithOrigins("http://localhost:8080")
+        .AllowCredentials()
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+));
+
+...
+
+app.UseCors();
+```
+
+And then we need to tell axios to send the cookie in the requests:
+
+```
+const axiosInstance = axios.create({
+  withCredentials: true,
+});
+```
+
+When using vue.js it will work exactly like swagger - just hit login and the cookie will take of the rest till the next time you need to login
+
+https://javascript.plainenglish.io/how-to-secure-jwt-in-a-single-page-application-6a46e69fc393
+https://spin.atomicobject.com/2020/07/25/net-core-jwt-cookie-authentication/
+https://dotnetcoretutorials.com/2017/01/15/httponly-cookies-asp-net-core/
+https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.cookieoptions?view=aspnetcore-6.0#properties
+https://blog.logrocket.com/jwt-authentication-best-practices/
+https://stackoverflow.com/questions/71419379/set-cookie-not-working-properly-in-axios-call

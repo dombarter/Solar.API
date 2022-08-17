@@ -10,17 +10,12 @@ export const useUserStore = defineStore("user", {
     return {
       email: localUserInformation.email as string | undefined | null,
       roles: localUserInformation.roles as string[] | undefined | null,
-      accessToken: localUserInformation.accessToken as
-        | string
-        | undefined
-        | null,
     };
   },
   actions: {
     login(loginResult: LoginResultDto): void {
       this.email = loginResult.email;
       this.roles = loginResult.roles;
-      this.accessToken = loginResult.accessToken;
 
       // Persist the user information
       window.localStorage.setItem(
@@ -28,14 +23,12 @@ export const useUserStore = defineStore("user", {
         JSON.stringify({
           email: this.email,
           roles: this.roles,
-          accessToken: this.accessToken,
         } as LoginResultDto)
       );
     },
     logout(): void {
       this.email = undefined;
       this.roles = undefined;
-      this.accessToken = undefined;
 
       window.localStorage.removeItem("user");
     },

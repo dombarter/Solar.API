@@ -84,6 +84,18 @@
         }
       }
     },
+    "/user/logout": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/moons/user": {
       "get": {
         "tags": [
@@ -267,10 +279,6 @@
             "type": "string",
             "nullable": true
           },
-          "accessToken": {
-            "type": "string",
-            "nullable": true
-          },
           "roles": {
             "type": "array",
             "items": {
@@ -301,18 +309,6 @@
         },
         "additionalProperties": false
       }
-    },
-    "securitySchemes": {
-      "Bearer": {
-        "type": "http",
-        "scheme": "Bearer",
-        "bearerFormat": "JWT"
-      }
     }
-  },
-  "security": [
-    {
-      "Bearer": [ ]
-    }
-  ]
+  }
 }

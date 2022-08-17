@@ -1,29 +1,24 @@
-import { AccountApi, Configuration, MoonApi } from "@/api";
+import axios from "axios";
+import { AccountApi, MoonApi } from "@/api";
 
-export function getAccountService(
-  accessToken: string | undefined | null
-): AccountApi {
-  // Generate the account service
+const axiosInstance = axios.create({
+  withCredentials: true,
+});
+
+export function getAccountService(): AccountApi {
   const accountService = new AccountApi(
-    new Configuration({
-      accessToken: accessToken || "",
-    }),
-    process.env.VUE_APP_API_BASE_URL
+    undefined,
+    process.env.VUE_APP_API_BASE_URL,
+    axiosInstance
   );
-
   return accountService;
 }
 
-export function getMoonService(
-  accessToken: string | undefined | null
-): MoonApi {
-  // Generate the account service
+export function getMoonService(): MoonApi {
   const moonService = new MoonApi(
-    new Configuration({
-      accessToken: accessToken || "",
-    }),
-    process.env.VUE_APP_API_BASE_URL
+    undefined,
+    process.env.VUE_APP_API_BASE_URL,
+    axiosInstance
   );
-
   return moonService;
 }

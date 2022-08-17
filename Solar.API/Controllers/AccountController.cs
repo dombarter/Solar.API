@@ -17,12 +17,14 @@ namespace Solar.API.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly IConfiguration _config;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ITokenService tokenService)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ITokenService tokenService, IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _config = config;
         }
 
         [HttpPost]
@@ -69,9 +71,36 @@ namespace Solar.API.Controllers
             var user = await _userManager.FindByNameAsync(model.Email);
             var token = await _tokenService.GenerateJwtToken(user, TimeSpan.FromMinutes(30));
 
+
+            Response.Cookies.Append(_config["Jwt:CookieName"], token, new CookieOptions
+            {
+                HttpOnly = true,
+                IsEssential = true,
+                MaxAge = TimeSpan.FromMinutes(30),
+                SameSite = SameSiteMode.None,
+                Secure = true,
+            });
+
             return new OkObjectResult(
-                new LoginResultDto(user.Email, token, await _userManager.GetRolesAsync(user))
+                new LoginResultDto(user.Email, await _userManager.GetRolesAsync(user))
             );
+        }
+
+        [HttpPost]
+        [Route("logout")]
+        [AllowAnonymous]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Append(_config["Jwt:CookieName"], string.Empty, new CookieOptions
+            {
+                HttpOnly = true,
+                IsEssential = true,
+                MaxAge = TimeSpan.Zero,
+                SameSite = SameSiteMode.None,
+                Secure = true,
+            });
+
+            return Ok();
         }
     }
 }
