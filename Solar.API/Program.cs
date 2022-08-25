@@ -75,7 +75,10 @@ using (var scope = app.Services.CreateScope())
     
     // Migrate the database
     var db = services.GetRequiredService<SolarDbContext>();
-    db.Database.Migrate();
+    if (db.Database.IsSqlServer())
+    {
+        db.Database.Migrate();
+    }
 
     // Add the roles
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
@@ -107,3 +110,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Make the startup class public (https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-6.0#basic-tests-with-the-default-webapplicationfactory)
+public partial class Program { }
