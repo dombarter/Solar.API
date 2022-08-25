@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Solar.Services", "Solar.Ser
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Solar.Vue", "Solar.Vue\Solar.Vue.esproj", "{C6137ED3-6551-4871-9637-E58FCC43A4D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solar.API.Test", "Solar.API.Test\Solar.API.Test.csproj", "{9705ABA9-F1FC-4277-AA43-FFC9DBB35358}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{C6137ED3-6551-4871-9637-E58FCC43A4D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6137ED3-6551-4871-9637-E58FCC43A4D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C6137ED3-6551-4871-9637-E58FCC43A4D3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9705ABA9-F1FC-4277-AA43-FFC9DBB35358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9705ABA9-F1FC-4277-AA43-FFC9DBB35358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9705ABA9-F1FC-4277-AA43-FFC9DBB35358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9705ABA9-F1FC-4277-AA43-FFC9DBB35358}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
